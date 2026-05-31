@@ -1,0 +1,318 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Gestão Obra API",
+    "description": "API para gestão de obras e controle de usuários.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Desenvolvimento"
+    }
+  ],
+  "tags": [
+    { "name": "Auth",      "description": "Endpoints de autenticação e registro" },
+    { "name": "Perfis",    "description": "Gestão de perfis de acesso" },
+    { "name": "Permissoes","description": "Gestão de permissões do sistema" }
+  ],
+  "paths": {
+    "/auth/register": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Registrar um novo usuário",
+        "operationId": "register",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UserRequest" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Usuário registrado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/UsuarioResponse" }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisição inválida ou chave já cadastrada",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Realizar login do usuário",
+        "operationId": "login",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UserRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login realizado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/LoginResponse" }
+              }
+            }
+          },
+          "401": {
+            "description": "Chave ou senha incorretas",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/perfis": {
+      "get": {
+        "tags": ["Perfis"],
+        "summary": "Listar todos os perfis ativos",
+        "operationId": "listarPerfis",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Lista de perfis",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/PerfilResponse" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/perfis/{id}": {
+      "get": {
+        "tags": ["Perfis"],
+        "summary": "Buscar perfil por ID",
+        "operationId": "buscarPerfilPorId",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Perfil encontrado",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PerfilResponse" }
+              }
+            }
+          },
+          "404": {
+            "description": "Perfil não encontrado",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/perfis/permissoes": {
+      "get": {
+        "tags": ["Perfis"],
+        "summary": "Listar todas as associações perfil-permissão",
+        "operationId": "listarPerfilPermissoes",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Lista de associações perfil-permissão",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/PerfilPermissaoResponse" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/permissoes": {
+      "get": {
+        "tags": ["Permissoes"],
+        "summary": "Listar todas as permissões ativas",
+        "operationId": "listarPermissoes",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Lista de permissões",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/PermissaoResponse" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/permissoes/{id}": {
+      "get": {
+        "tags": ["Permissoes"],
+        "summary": "Buscar permissão por ID",
+        "operationId": "buscarPermissaoPorId",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Permissão encontrada",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PermissaoResponse" }
+              }
+            }
+          },
+          "404": {
+            "description": "Permissão não encontrada",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "UserRequest": {
+        "type": "object",
+        "required": ["chave", "senha"],
+        "properties": {
+          "chave": {
+            "type": "string",
+            "maxLength": 100,
+            "description": "Chave de acesso única do usuário"
+          },
+          "senha": {
+            "type": "string",
+            "minLength": 6,
+            "maxLength": 255,
+            "description": "Senha do usuário"
+          }
+        }
+      },
+      "UsuarioResponse": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "chave": { "type": "string" },
+          "ativo": { "type": "boolean" },
+          "criadoPor": { "type": "integer", "format": "int64", "nullable": true },
+          "criadoEm": { "type": "string", "format": "date-time" },
+          "alteradoPor": { "type": "integer", "format": "int64", "nullable": true },
+          "alteradoEm": { "type": "string", "format": "date-time" }
+        }
+      },
+      "LoginResponse": {
+        "type": "object",
+        "properties": {
+          "token": { "type": "string", "description": "Token JWT de autenticação" },
+          "type": { "type": "string", "description": "Tipo do token", "example": "Bearer" }
+        }
+      },
+      "PerfilResponse": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "codigo": { "type": "string" },
+          "nome": { "type": "string" },
+          "descricao": { "type": "string" },
+          "ativo": { "type": "boolean" },
+          "criadoPor": { "type": "integer", "format": "int64", "nullable": true },
+          "criadoEm": { "type": "string", "format": "date-time" },
+          "alteradoPor": { "type": "integer", "format": "int64", "nullable": true },
+          "alteradoEm": { "type": "string", "format": "date-time" }
+        }
+      },
+      "PermissaoResponse": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "codigo": { "type": "string" },
+          "nome": { "type": "string" },
+          "descricao": { "type": "string" },
+          "ativo": { "type": "boolean" },
+          "criadoPor": { "type": "integer", "format": "int64", "nullable": true },
+          "criadoEm": { "type": "string", "format": "date-time" },
+          "alteradoPor": { "type": "integer", "format": "int64", "nullable": true },
+          "alteradoEm": { "type": "string", "format": "date-time" }
+        }
+      },
+      "PerfilPermissaoResponse": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "idPerfil": { "type": "integer", "format": "int64" },
+          "nomePerfil": { "type": "string" },
+          "idPermissao": { "type": "integer", "format": "int64" },
+          "nomePermissao": { "type": "string" },
+          "ativo": { "type": "boolean" },
+          "criadoPor": { "type": "integer", "format": "int64", "nullable": true },
+          "criadoEm": { "type": "string", "format": "date-time" },
+          "alteradoPor": { "type": "integer", "format": "int64", "nullable": true },
+          "alteradoEm": { "type": "string", "format": "date-time" }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "timestamp": { "type": "string", "format": "date-time" },
+          "status": { "type": "integer" },
+          "error": { "type": "string" },
+          "message": { "type": "string" },
+          "path": { "type": "string" }
+        }
+      }
+    }
+  }
+}

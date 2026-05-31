@@ -1,0 +1,73 @@
+# ========================
+# Compilação / Build
+# ========================
+target/
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+
+# ========================
+# Maven
+# ========================
+.mvn/wrapper/maven-wrapper.jar
+!.mvn/wrapper/maven-wrapper.properties
+.mv
+
+# ========================
+# IDE - IntelliJ IDEA
+# ========================
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+# ========================
+# IDE - Eclipse / STS
+# ========================
+.classpath
+.project
+.settings/
+.springBeans
+.sts4-cache
+
+# ========================
+# IDE - VS Code
+# ========================
+.vscode/
+
+# ========================
+# Spring Boot
+# ========================
+spring-shell.log
+
+# ========================
+# Variáveis de ambiente e segredos
+# ========================
+.env
+.env.*
+*.env
+application-local.yml
+application-local.properties
+
+# ========================
+# Logs
+# ========================
+*.log
+*.pid
+logs/
+
+# ========================
+# OS
+# ========================
+.DS_Store
+Thumbs.db
+
+# ========================
+# Docker (opcional)
+# ========================
+docker-compose.override.yml
+
+settings.local.json

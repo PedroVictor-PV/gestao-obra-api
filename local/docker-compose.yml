@@ -1,0 +1,14 @@
+services:
+  postgres-gestaoobraapi-local:
+    image: postgres:latest
+    container_name: postgres-gestaoobraapi_local
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=gestaoobraapi
+    ports:
+      - "5438:5432"
+    volumes:
+      - postgres-data-gestaoobraapi:/var/lib/postgresql
+    restart: always
+volumes:
+  postgres-data-gestaoobraapi:

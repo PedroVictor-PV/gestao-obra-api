@@ -1,0 +1,24 @@
+package com.example.gestaoobraapi.model;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+@Entity
+@Table(name = "usuario", schema = "seguranca")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class Usuario extends BaseEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "chave", nullable = false, unique = true, length = 100)
+    private String chave;
+
+    @Column(name = "senha", nullable = false, length = 255)
+    private String senha;
+}
