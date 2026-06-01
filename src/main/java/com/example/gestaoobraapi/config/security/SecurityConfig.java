@@ -65,7 +65,9 @@ public class SecurityConfig {
                                 "/materiais",
                                 "/materiais/**",
                                 "/servico",
-                                "/servico/**"
+                                "/servico/**",
+                                "/relatorios",
+                                "/relatorios/**"
                         ).authenticated()
                         .anyRequest().authenticated()
                 )

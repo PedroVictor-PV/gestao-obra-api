@@ -8,7 +8,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface MovimentacaoEstoqueRepository extends JpaRepository<MovimentacaoEstoque, Long> {
+public interface MovimentacaoEstoqueRepository extends JpaRepository<MovimentacaoEstoque, Long>,
+        MovimentacaoEstoqueRepositoryCustom {
 
     @Query("""
             SELECT m FROM MovimentacaoEstoque m

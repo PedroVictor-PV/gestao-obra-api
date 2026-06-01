@@ -40,4 +40,15 @@ public interface EstoqueObraRepository extends JpaRepository<EstoqueObra, Long> 
             """)
     Optional<EstoqueObra> findByObraIdAndMaterialIdAndFornecedorIdWithRelations(
             Long obraId, Long materialId, Long fornecedorId);
+
+    @Query("""
+            SELECT e FROM EstoqueObra e
+            JOIN FETCH e.obra
+            JOIN FETCH e.material m
+            JOIN FETCH m.fornecedor
+            JOIN FETCH e.fornecedor
+            WHERE e.obra.id = :obraId
+            ORDER BY m.nome
+            """)
+    List<EstoqueObra> findAllByObraIdWithRelations(Long obraId);
 }

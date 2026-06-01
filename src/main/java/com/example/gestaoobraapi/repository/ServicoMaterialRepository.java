@@ -31,4 +31,15 @@ public interface ServicoMaterialRepository extends JpaRepository<ServicoMaterial
             WHERE sm.id = :id
             """)
     Optional<ServicoMaterial> findByIdWithRelations(Long id);
+
+    @Query("""
+            SELECT sm FROM ServicoMaterial sm
+            JOIN FETCH sm.servico s
+            JOIN FETCH sm.obra
+            JOIN FETCH sm.material m
+            JOIN FETCH m.fornecedor
+            WHERE sm.obra.id = :obraId
+            ORDER BY s.nome, m.nome
+            """)
+    List<ServicoMaterial> findAllByObraIdWithRelations(Long obraId);
 }
