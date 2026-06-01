@@ -18,6 +18,6 @@ public class PerfilPermissaoService {
 
     @Transactional(readOnly = true)
     public List<PerfilPermissao> listarTodas() {
-        return perfilPermissaoRepository.findAll();
+        return perfilPermissaoRepository.findAllWithPerfilAndPermissao();
     }
 }

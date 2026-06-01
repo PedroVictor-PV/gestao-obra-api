@@ -13,7 +13,7 @@ target/
 # ========================
 .mvn/wrapper/maven-wrapper.jar
 !.mvn/wrapper/maven-wrapper.properties
-.mv
+.m2/
 
 # ========================
 # IDE - IntelliJ IDEA
