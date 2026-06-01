@@ -9,11 +9,16 @@ target/
 *.nar
 
 # ========================
+# Scripts locais (utilitários de dev, não usados no build)
+# ========================
+scripts/
+
+# ========================
 # Maven
 # ========================
 .mvn/wrapper/maven-wrapper.jar
 !.mvn/wrapper/maven-wrapper.properties
-.mv
+.m2/
 
 # ========================
 # IDE - IntelliJ IDEA

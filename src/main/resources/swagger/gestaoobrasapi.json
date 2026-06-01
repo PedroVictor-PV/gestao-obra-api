@@ -1,8 +1,8 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "Gestão Obra API",
-    "description": "API para gestão de obras e controle de usuários.",
+    "title": "Gest\u00e3o Obra API",
+    "description": "API para gest\u00e3o de obras e controle de usu\u00e1rios.",
     "version": "1.0.0"
   },
   "servers": [
@@ -12,38 +12,92 @@
     }
   ],
   "tags": [
-    { "name": "Auth",      "description": "Endpoints de autenticação e registro" },
-    { "name": "Perfis",    "description": "Gestão de perfis de acesso" },
-    { "name": "Permissoes","description": "Gestão de permissões do sistema" }
+    {
+      "name": "Auth",
+      "description": "Endpoints de autentica\u00e7\u00e3o e registro"
+    },
+    {
+      "name": "Perfis",
+      "description": "Gest\u00e3o de perfis de acesso"
+    },
+    {
+      "name": "Permissoes",
+      "description": "Gest\u00e3o de permiss\u00f5es do sistema"
+    },
+    {
+      "name": "PerfilPermissoes",
+      "description": "Associa\u00e7\u00f5es entre perfis e permiss\u00f5es"
+    },
+    {
+      "name": "Fornecedores",
+      "description": "Gest\u00e3o de fornecedores"
+    },
+    {
+      "name": "StatusObra",
+      "description": "Gest\u00e3o de status de obra"
+    },
+    {
+      "name": "Obras",
+      "description": "Gest\u00e3o de obras"
+    },
+    {
+      "name": "Materiais",
+      "description": "Gest\u00e3o de materiais e categorias"
+    },
+    {
+      "name": "EstoqueObra",
+      "description": "Estoque de materiais por obra"
+    },
+    {
+      "name": "MovimentacaoEstoque",
+      "description": "Log de movimenta\u00e7\u00f5es de estoque por obra"
+    },
+    {
+      "name": "StatusServico"
+    },
+    {
+      "name": "Servicos"
+    },
+    {
+      "name": "ServicoMaterial"
+    }
   ],
   "paths": {
     "/auth/register": {
       "post": {
-        "tags": ["Auth"],
-        "summary": "Registrar um novo usuário",
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Registrar um novo usu\u00e1rio",
         "operationId": "register",
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": { "$ref": "#/components/schemas/UserRequest" }
+              "schema": {
+                "$ref": "#/components/schemas/UserRequest"
+              }
             }
           }
         },
         "responses": {
           "201": {
-            "description": "Usuário registrado com sucesso",
+            "description": "Usu\u00e1rio registrado com sucesso",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/UsuarioResponse" }
+                "schema": {
+                  "$ref": "#/components/schemas/UsuarioResponse"
+                }
               }
             }
           },
           "400": {
-            "description": "Requisição inválida ou chave já cadastrada",
+            "description": "Requisi\u00e7\u00e3o inv\u00e1lida ou chave j\u00e1 cadastrada",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
               }
             }
           }
@@ -52,14 +106,18 @@
     },
     "/auth/login": {
       "post": {
-        "tags": ["Auth"],
-        "summary": "Realizar login do usuário",
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Realizar login do usu\u00e1rio",
         "operationId": "login",
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": { "$ref": "#/components/schemas/UserRequest" }
+              "schema": {
+                "$ref": "#/components/schemas/UserRequest"
+              }
             }
           }
         },
@@ -68,7 +126,9 @@
             "description": "Login realizado com sucesso",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/LoginResponse" }
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
               }
             }
           },
@@ -76,7 +136,9 @@
             "description": "Chave ou senha incorretas",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
               }
             }
           }
@@ -85,10 +147,16 @@
     },
     "/perfis": {
       "get": {
-        "tags": ["Perfis"],
+        "tags": [
+          "Perfis"
+        ],
         "summary": "Listar todos os perfis ativos",
         "operationId": "listarPerfis",
-        "security": [{ "bearerAuth": [] }],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "Lista de perfis",
@@ -96,7 +164,9 @@
               "application/json": {
                 "schema": {
                   "type": "array",
-                  "items": { "$ref": "#/components/schemas/PerfilResponse" }
+                  "items": {
+                    "$ref": "#/components/schemas/PerfilResponse"
+                  }
                 }
               }
             }
@@ -106,16 +176,25 @@
     },
     "/perfis/{id}": {
       "get": {
-        "tags": ["Perfis"],
+        "tags": [
+          "Perfis"
+        ],
         "summary": "Buscar perfil por ID",
         "operationId": "buscarPerfilPorId",
-        "security": [{ "bearerAuth": [] }],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": { "type": "integer", "format": "int64" }
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
           }
         ],
         "responses": {
@@ -123,35 +202,47 @@
             "description": "Perfil encontrado",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/PerfilResponse" }
+                "schema": {
+                  "$ref": "#/components/schemas/PerfilResponse"
+                }
               }
             }
           },
           "404": {
-            "description": "Perfil não encontrado",
+            "description": "Perfil n\u00e3o encontrado",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
               }
             }
           }
         }
       }
     },
-    "/perfis/permissoes": {
+    "/perfil-permissoes": {
       "get": {
-        "tags": ["Perfis"],
-        "summary": "Listar todas as associações perfil-permissão",
+        "tags": [
+          "PerfilPermissoes"
+        ],
+        "summary": "Listar todas as associa\u00e7\u00f5es perfil-permiss\u00e3o",
         "operationId": "listarPerfilPermissoes",
-        "security": [{ "bearerAuth": [] }],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Lista de associações perfil-permissão",
+            "description": "Lista de associa\u00e7\u00f5es perfil-permiss\u00e3o",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
-                  "items": { "$ref": "#/components/schemas/PerfilPermissaoResponse" }
+                  "items": {
+                    "$ref": "#/components/schemas/PerfilPermissaoResponse"
+                  }
                 }
               }
             }
@@ -161,18 +252,26 @@
     },
     "/permissoes": {
       "get": {
-        "tags": ["Permissoes"],
-        "summary": "Listar todas as permissões ativas",
+        "tags": [
+          "Permissoes"
+        ],
+        "summary": "Listar todas as permiss\u00f5es ativas",
         "operationId": "listarPermissoes",
-        "security": [{ "bearerAuth": [] }],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Lista de permissões",
+            "description": "Lista de permiss\u00f5es",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
-                  "items": { "$ref": "#/components/schemas/PermissaoResponse" }
+                  "items": {
+                    "$ref": "#/components/schemas/PermissaoResponse"
+                  }
                 }
               }
             }
@@ -182,34 +281,1979 @@
     },
     "/permissoes/{id}": {
       "get": {
-        "tags": ["Permissoes"],
-        "summary": "Buscar permissão por ID",
+        "tags": [
+          "Permissoes"
+        ],
+        "summary": "Buscar permiss\u00e3o por ID",
         "operationId": "buscarPermissaoPorId",
-        "security": [{ "bearerAuth": [] }],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": { "type": "integer", "format": "int64" }
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "Permissão encontrada",
+            "description": "Permiss\u00e3o encontrada",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/PermissaoResponse" }
+                "schema": {
+                  "$ref": "#/components/schemas/PermissaoResponse"
+                }
               }
             }
           },
           "404": {
-            "description": "Permissão não encontrada",
+            "description": "Permiss\u00e3o n\u00e3o encontrada",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
               }
             }
+          }
+        }
+      }
+    },
+    "/fornecedores": {
+      "post": {
+        "tags": [
+          "Fornecedores"
+        ],
+        "summary": "Cadastrar fornecedor",
+        "operationId": "criarFornecedor",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FornecedorRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Fornecedor cadastrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FornecedorResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisi\u00e7\u00e3o inv\u00e1lida ou c\u00f3digo j\u00e1 cadastrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Fornecedores"
+        ],
+        "summary": "Listar fornecedores",
+        "operationId": "listarFornecedores",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de fornecedores",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FornecedorResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/fornecedores/{id}": {
+      "get": {
+        "tags": [
+          "Fornecedores"
+        ],
+        "summary": "Buscar fornecedor por ID",
+        "operationId": "buscarFornecedorPorId",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Fornecedor encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FornecedorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Fornecedor n\u00e3o encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Fornecedores"
+        ],
+        "summary": "Atualizar fornecedor",
+        "operationId": "atualizarFornecedor",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FornecedorRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Fornecedor atualizado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FornecedorResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisi\u00e7\u00e3o inv\u00e1lida ou c\u00f3digo j\u00e1 cadastrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Fornecedor n\u00e3o encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Fornecedores"
+        ],
+        "summary": "Excluir fornecedor",
+        "operationId": "excluirFornecedor",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Fornecedor exclu\u00eddo"
+          },
+          "404": {
+            "description": "Fornecedor n\u00e3o encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/obra": {
+      "post": {
+        "tags": [
+          "Obras"
+        ],
+        "summary": "Cadastrar obra",
+        "operationId": "criarObra",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ObraRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Obra cadastrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObraResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisi\u00e7\u00e3o inv\u00e1lida ou c\u00f3digo j\u00e1 cadastrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Status de obra ou respons\u00e1vel n\u00e3o encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Obras"
+        ],
+        "summary": "Listar obras",
+        "operationId": "listarObras",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de obras",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ObraResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/obra/{id}": {
+      "get": {
+        "tags": [
+          "Obras"
+        ],
+        "summary": "Buscar obra por ID",
+        "operationId": "buscarObraPorId",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Obra encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObraResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Obra n\u00e3o encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Obras"
+        ],
+        "summary": "Atualizar obra",
+        "operationId": "atualizarObra",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ObraRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Obra atualizada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObraResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisi\u00e7\u00e3o inv\u00e1lida ou c\u00f3digo j\u00e1 cadastrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Obra, status ou respons\u00e1vel n\u00e3o encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Obras"
+        ],
+        "summary": "Excluir obra",
+        "operationId": "excluirObra",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Obra exclu\u00edda"
+          },
+          "404": {
+            "description": "Obra n\u00e3o encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/obra/status": {
+      "post": {
+        "tags": [
+          "StatusObra"
+        ],
+        "summary": "Cadastrar status de obra",
+        "operationId": "criarStatusObra",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StatusObraRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Status de obra cadastrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusObraResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisi\u00e7\u00e3o inv\u00e1lida ou c\u00f3digo j\u00e1 cadastrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "StatusObra"
+        ],
+        "summary": "Listar status de obra",
+        "operationId": "listarStatusObra",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de status de obra",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StatusObraResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/obra/status/{id}": {
+      "get": {
+        "tags": [
+          "StatusObra"
+        ],
+        "summary": "Buscar status de obra por ID",
+        "operationId": "buscarStatusObraPorId",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Status de obra encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusObraResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Status de obra n\u00e3o encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "StatusObra"
+        ],
+        "summary": "Atualizar status de obra",
+        "operationId": "atualizarStatusObra",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StatusObraRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Status de obra atualizado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusObraResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisi\u00e7\u00e3o inv\u00e1lida ou c\u00f3digo j\u00e1 cadastrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Status de obra n\u00e3o encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "StatusObra"
+        ],
+        "summary": "Excluir status de obra",
+        "operationId": "excluirStatusObra",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Status de obra exclu\u00eddo"
+          },
+          "404": {
+            "description": "Status de obra n\u00e3o encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/materiais/categoria": {
+      "post": {
+        "tags": [
+          "Materiais"
+        ],
+        "summary": "Cadastrar Categoria de material",
+        "operationId": "criarCategoriaMaterial",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CategoriaMaterialRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Categoria de material cadastrado(a)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoriaMaterialResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisi\u00e7\u00e3o inv\u00e1lida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso relacionado n\u00e3o encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Materiais"
+        ],
+        "summary": "Listar categoria de materials",
+        "operationId": "listarCategoriasMaterial",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de categoria de materials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CategoriaMaterialResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/materiais/categoria/{id}": {
+      "get": {
+        "tags": [
+          "Materiais"
+        ],
+        "summary": "Buscar categoria de material por ID",
+        "operationId": "buscarCategoriaMaterialPorId",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Categoria de material encontrado(a)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoriaMaterialResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Categoria de material n\u00e3o encontrado(a)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Materiais"
+        ],
+        "summary": "Atualizar categoria de material",
+        "operationId": "atualizarCategoriaMaterial",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CategoriaMaterialRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Categoria de material atualizado(a)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoriaMaterialResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisi\u00e7\u00e3o inv\u00e1lida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Categoria de material n\u00e3o encontrado(a)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Materiais"
+        ],
+        "summary": "Excluir categoria de material",
+        "operationId": "excluirCategoriaMaterial",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Categoria de material exclu\u00eddo(a)"
+          },
+          "404": {
+            "description": "Categoria de material n\u00e3o encontrado(a)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/materiais": {
+      "post": {
+        "tags": [
+          "Materiais"
+        ],
+        "summary": "Cadastrar Material",
+        "operationId": "criarMaterial",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MaterialRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Material cadastrado(a)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MaterialResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisi\u00e7\u00e3o inv\u00e1lida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso relacionado n\u00e3o encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Materiais"
+        ],
+        "summary": "Listar materials",
+        "operationId": "listarMateriais",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de materials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MaterialResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/materiais/{id}": {
+      "get": {
+        "tags": [
+          "Materiais"
+        ],
+        "summary": "Buscar material por ID",
+        "operationId": "buscarMaterialPorId",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Material encontrado(a)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MaterialResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Material n\u00e3o encontrado(a)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Materiais"
+        ],
+        "summary": "Atualizar material",
+        "operationId": "atualizarMaterial",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MaterialRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Material atualizado(a)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MaterialResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisi\u00e7\u00e3o inv\u00e1lida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Material n\u00e3o encontrado(a)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Materiais"
+        ],
+        "summary": "Excluir material",
+        "operationId": "excluirMaterial",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Material exclu\u00eddo(a)"
+          },
+          "404": {
+            "description": "Material n\u00e3o encontrado(a)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/obra/estoque": {
+      "post": {
+        "tags": [
+          "EstoqueObra"
+        ],
+        "summary": "Cadastrar Estoque",
+        "operationId": "criarEstoqueObra",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EstoqueObraRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Estoque cadastrado(a)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EstoqueObraResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisi\u00e7\u00e3o inv\u00e1lida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso relacionado n\u00e3o encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "EstoqueObra"
+        ],
+        "summary": "Listar estoques",
+        "operationId": "listarEstoqueObra",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de estoques",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EstoqueObraResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/obra/estoque/{id}": {
+      "get": {
+        "tags": [
+          "EstoqueObra"
+        ],
+        "summary": "Buscar estoque por ID",
+        "operationId": "buscarEstoqueObraPorId",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Estoque encontrado(a)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EstoqueObraResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Estoque n\u00e3o encontrado(a)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "EstoqueObra"
+        ],
+        "summary": "Atualizar estoque",
+        "operationId": "atualizarEstoqueObra",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EstoqueObraRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Estoque atualizado(a)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EstoqueObraResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisi\u00e7\u00e3o inv\u00e1lida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Estoque n\u00e3o encontrado(a)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "EstoqueObra"
+        ],
+        "summary": "Excluir estoque",
+        "operationId": "excluirEstoqueObra",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Estoque exclu\u00eddo(a)"
+          },
+          "404": {
+            "description": "Estoque n\u00e3o encontrado(a)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/obra/movimentacao/estoque/{idObra}": {
+      "get": {
+        "tags": [
+          "MovimentacaoEstoque"
+        ],
+        "summary": "Listar movimenta\u00e7\u00f5es de estoque por obra",
+        "operationId": "listarMovimentacoesEstoquePorObra",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "idObra",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de movimenta\u00e7\u00f5es de estoque da obra",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MovimentacaoEstoqueResponse"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Obra n\u00e3o encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/servico/status": {
+      "post": {
+        "tags": [
+          "StatusServico"
+        ],
+        "operationId": "criarStatusServico",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StatusServicoRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusServicoResponse"
+                }
+              }
+            },
+            "description": "Criado"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "StatusServico"
+        ],
+        "operationId": "listarStatusServico",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StatusServicoResponse"
+                  }
+                }
+              }
+            },
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/servico/status/{id}": {
+      "get": {
+        "tags": [
+          "StatusServico"
+        ],
+        "operationId": "buscarStatusServicoPorId",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusServicoResponse"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "StatusServico"
+        ],
+        "operationId": "atualizarStatusServico",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StatusServicoRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusServicoResponse"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "StatusServico"
+        ],
+        "operationId": "excluirStatusServico",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Exclu\u00eddo"
+          }
+        }
+      }
+    },
+    "/servico": {
+      "post": {
+        "tags": [
+          "Servicos"
+        ],
+        "operationId": "criarServico",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ServicoRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServicoResponse"
+                }
+              }
+            },
+            "description": "Criado"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Servicos"
+        ],
+        "operationId": "listarServicos",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ServicoResponse"
+                  }
+                }
+              }
+            },
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/servico/{id}": {
+      "get": {
+        "tags": [
+          "Servicos"
+        ],
+        "operationId": "buscarServicoPorId",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServicoResponse"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Servicos"
+        ],
+        "operationId": "atualizarServico",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ServicoRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServicoResponse"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Servicos"
+        ],
+        "operationId": "excluirServico",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Exclu\u00eddo"
+          }
+        }
+      }
+    },
+    "/servico/material": {
+      "post": {
+        "tags": [
+          "ServicoMaterial"
+        ],
+        "operationId": "criarServicoMaterial",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ServicoMaterialRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServicoMaterialResponse"
+                }
+              }
+            },
+            "description": "Criado"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "ServicoMaterial"
+        ],
+        "operationId": "listarServicoMaterial",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ServicoMaterialResponse"
+                  }
+                }
+              }
+            },
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/servico/material/{id}": {
+      "get": {
+        "tags": [
+          "ServicoMaterial"
+        ],
+        "operationId": "buscarServicoMaterialPorId",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServicoMaterialResponse"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "ServicoMaterial"
+        ],
+        "operationId": "atualizarServicoMaterial",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ServicoMaterialRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServicoMaterialResponse"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "ServicoMaterial"
+        ],
+        "operationId": "excluirServicoMaterial",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Exclu\u00eddo"
           }
         }
       }
@@ -226,91 +2270,978 @@
     "schemas": {
       "UserRequest": {
         "type": "object",
-        "required": ["chave", "senha"],
+        "required": [
+          "chave",
+          "senha"
+        ],
         "properties": {
           "chave": {
             "type": "string",
             "maxLength": 100,
-            "description": "Chave de acesso única do usuário"
+            "description": "Chave de acesso \u00fanica do usu\u00e1rio"
           },
           "senha": {
             "type": "string",
             "minLength": 6,
             "maxLength": 255,
-            "description": "Senha do usuário"
+            "description": "Senha do usu\u00e1rio"
           }
         }
       },
       "UsuarioResponse": {
         "type": "object",
         "properties": {
-          "id": { "type": "integer", "format": "int64" },
-          "chave": { "type": "string" },
-          "ativo": { "type": "boolean" },
-          "criadoPor": { "type": "integer", "format": "int64", "nullable": true },
-          "criadoEm": { "type": "string", "format": "date-time" },
-          "alteradoPor": { "type": "integer", "format": "int64", "nullable": true },
-          "alteradoEm": { "type": "string", "format": "date-time" }
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "chave": {
+            "type": "string"
+          },
+          "ativo": {
+            "type": "boolean"
+          },
+          "criadoPor": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "criadoEm": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "alteradoPor": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "alteradoEm": {
+            "type": "string",
+            "format": "date-time"
+          }
         }
       },
       "LoginResponse": {
         "type": "object",
         "properties": {
-          "token": { "type": "string", "description": "Token JWT de autenticação" },
-          "type": { "type": "string", "description": "Tipo do token", "example": "Bearer" }
+          "token": {
+            "type": "string",
+            "description": "Token JWT de autentica\u00e7\u00e3o"
+          },
+          "type": {
+            "type": "string",
+            "description": "Tipo do token",
+            "example": "Bearer"
+          }
+        }
+      },
+      "PerfilRequest": {
+        "type": "object",
+        "required": [
+          "codigo",
+          "nome"
+        ],
+        "properties": {
+          "codigo": {
+            "type": "string",
+            "maxLength": 50
+          },
+          "nome": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "descricao": {
+            "type": "string"
+          }
+        }
+      },
+      "PermissaoRequest": {
+        "type": "object",
+        "required": [
+          "codigo",
+          "nome"
+        ],
+        "properties": {
+          "codigo": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "nome": {
+            "type": "string",
+            "maxLength": 150
+          },
+          "descricao": {
+            "type": "string"
+          }
+        }
+      },
+      "PerfilPermissaoRequest": {
+        "type": "object",
+        "required": [
+          "idPerfil",
+          "idPermissao"
+        ],
+        "properties": {
+          "idPerfil": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "idPermissao": {
+            "type": "integer",
+            "format": "int64"
+          }
         }
       },
       "PerfilResponse": {
         "type": "object",
         "properties": {
-          "id": { "type": "integer", "format": "int64" },
-          "codigo": { "type": "string" },
-          "nome": { "type": "string" },
-          "descricao": { "type": "string" },
-          "ativo": { "type": "boolean" },
-          "criadoPor": { "type": "integer", "format": "int64", "nullable": true },
-          "criadoEm": { "type": "string", "format": "date-time" },
-          "alteradoPor": { "type": "integer", "format": "int64", "nullable": true },
-          "alteradoEm": { "type": "string", "format": "date-time" }
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "codigo": {
+            "type": "string"
+          },
+          "nome": {
+            "type": "string"
+          },
+          "descricao": {
+            "type": "string"
+          },
+          "ativo": {
+            "type": "boolean"
+          },
+          "criadoPor": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "criadoEm": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "alteradoPor": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "alteradoEm": {
+            "type": "string",
+            "format": "date-time"
+          }
         }
       },
       "PermissaoResponse": {
         "type": "object",
         "properties": {
-          "id": { "type": "integer", "format": "int64" },
-          "codigo": { "type": "string" },
-          "nome": { "type": "string" },
-          "descricao": { "type": "string" },
-          "ativo": { "type": "boolean" },
-          "criadoPor": { "type": "integer", "format": "int64", "nullable": true },
-          "criadoEm": { "type": "string", "format": "date-time" },
-          "alteradoPor": { "type": "integer", "format": "int64", "nullable": true },
-          "alteradoEm": { "type": "string", "format": "date-time" }
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "codigo": {
+            "type": "string"
+          },
+          "nome": {
+            "type": "string"
+          },
+          "descricao": {
+            "type": "string"
+          },
+          "ativo": {
+            "type": "boolean"
+          },
+          "criadoPor": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "criadoEm": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "alteradoPor": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "alteradoEm": {
+            "type": "string",
+            "format": "date-time"
+          }
         }
       },
       "PerfilPermissaoResponse": {
         "type": "object",
         "properties": {
-          "id": { "type": "integer", "format": "int64" },
-          "idPerfil": { "type": "integer", "format": "int64" },
-          "nomePerfil": { "type": "string" },
-          "idPermissao": { "type": "integer", "format": "int64" },
-          "nomePermissao": { "type": "string" },
-          "ativo": { "type": "boolean" },
-          "criadoPor": { "type": "integer", "format": "int64", "nullable": true },
-          "criadoEm": { "type": "string", "format": "date-time" },
-          "alteradoPor": { "type": "integer", "format": "int64", "nullable": true },
-          "alteradoEm": { "type": "string", "format": "date-time" }
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "idPerfil": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "nomePerfil": {
+            "type": "string"
+          },
+          "idPermissao": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "nomePermissao": {
+            "type": "string"
+          },
+          "ativo": {
+            "type": "boolean"
+          },
+          "criadoPor": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "criadoEm": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "alteradoPor": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "alteradoEm": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "FornecedorRequest": {
+        "type": "object",
+        "required": [
+          "codigo",
+          "nome"
+        ],
+        "properties": {
+          "codigo": {
+            "type": "string",
+            "maxLength": 50
+          },
+          "nome": {
+            "type": "string",
+            "maxLength": 150
+          },
+          "telefone": {
+            "type": "string",
+            "maxLength": 20
+          }
+        }
+      },
+      "FornecedorResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "codigo": {
+            "type": "string"
+          },
+          "nome": {
+            "type": "string"
+          },
+          "telefone": {
+            "type": "string"
+          },
+          "ativo": {
+            "type": "boolean"
+          },
+          "criadoPor": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "criadoEm": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "alteradoPor": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "alteradoEm": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ObraRequest": {
+        "type": "object",
+        "required": [
+          "idStatusObra",
+          "codigo",
+          "nome"
+        ],
+        "properties": {
+          "idStatusObra": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "idResponsavel": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "codigo": {
+            "type": "string",
+            "maxLength": 50
+          },
+          "nome": {
+            "type": "string",
+            "maxLength": 150
+          },
+          "descricao": {
+            "type": "string"
+          },
+          "dataInicio": {
+            "type": "string",
+            "format": "date"
+          },
+          "dataFim": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      },
+      "ObraResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "idStatusObra": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "nomeStatusObra": {
+            "type": "string"
+          },
+          "idResponsavel": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "chaveResponsavel": {
+            "type": "string",
+            "nullable": true
+          },
+          "codigo": {
+            "type": "string"
+          },
+          "nome": {
+            "type": "string"
+          },
+          "descricao": {
+            "type": "string"
+          },
+          "dataInicio": {
+            "type": "string",
+            "format": "date"
+          },
+          "dataFim": {
+            "type": "string",
+            "format": "date"
+          },
+          "ativo": {
+            "type": "boolean"
+          },
+          "criadoPor": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "criadoEm": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "alteradoPor": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "alteradoEm": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "StatusObraRequest": {
+        "type": "object",
+        "required": [
+          "codigo",
+          "nome"
+        ],
+        "properties": {
+          "codigo": {
+            "type": "string",
+            "maxLength": 50
+          },
+          "nome": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "descricao": {
+            "type": "string"
+          }
+        }
+      },
+      "StatusObraResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "codigo": {
+            "type": "string"
+          },
+          "nome": {
+            "type": "string"
+          },
+          "descricao": {
+            "type": "string"
+          },
+          "ativo": {
+            "type": "boolean"
+          },
+          "criadoPor": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "criadoEm": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "alteradoPor": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "alteradoEm": {
+            "type": "string",
+            "format": "date-time"
+          }
         }
       },
       "ErrorResponse": {
         "type": "object",
         "properties": {
-          "timestamp": { "type": "string", "format": "date-time" },
-          "status": { "type": "integer" },
-          "error": { "type": "string" },
-          "message": { "type": "string" },
-          "path": { "type": "string" }
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "integer"
+          },
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          }
+        }
+      },
+      "CategoriaMaterialRequest": {
+        "type": "object",
+        "required": [
+          "codigo",
+          "nome"
+        ],
+        "properties": {
+          "codigo": {
+            "type": "string",
+            "maxLength": 50
+          },
+          "nome": {
+            "type": "string",
+            "maxLength": 100
+          }
+        }
+      },
+      "CategoriaMaterialResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "codigo": {
+            "type": "string"
+          },
+          "nome": {
+            "type": "string"
+          },
+          "ativo": {
+            "type": "boolean"
+          },
+          "criadoPor": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "criadoEm": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "alteradoPor": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "alteradoEm": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "MaterialRequest": {
+        "type": "object",
+        "required": [
+          "idCategoria",
+          "idFornecedor",
+          "codigo",
+          "nome"
+        ],
+        "properties": {
+          "idCategoria": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "idFornecedor": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "codigo": {
+            "type": "string",
+            "maxLength": 50
+          },
+          "nome": {
+            "type": "string",
+            "maxLength": 150
+          }
+        }
+      },
+      "MaterialResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "idCategoria": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "nomeCategoria": {
+            "type": "string"
+          },
+          "idFornecedor": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "nomeFornecedor": {
+            "type": "string"
+          },
+          "codigo": {
+            "type": "string"
+          },
+          "nome": {
+            "type": "string"
+          },
+          "ativo": {
+            "type": "boolean"
+          },
+          "criadoPor": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "criadoEm": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "alteradoPor": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "alteradoEm": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "EstoqueObraRequest": {
+        "type": "object",
+        "required": [
+          "idObra",
+          "idMaterial",
+          "quantidadeAtual",
+          "quantidadeMinima"
+        ],
+        "properties": {
+          "idObra": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "idMaterial": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "quantidadeAtual": {
+            "type": "number"
+          },
+          "quantidadeMinima": {
+            "type": "number"
+          },
+          "observacao": {
+            "type": "string",
+            "description": "Observa\u00e7\u00e3o registrada no log de movimenta\u00e7\u00e3o"
+          }
+        }
+      },
+      "EstoqueObraResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "idObra": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "nomeObra": {
+            "type": "string"
+          },
+          "idMaterial": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "nomeMaterial": {
+            "type": "string"
+          },
+          "idFornecedor": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "nomeFornecedor": {
+            "type": "string"
+          },
+          "quantidadeAtual": {
+            "type": "number"
+          },
+          "quantidadeMinima": {
+            "type": "number"
+          },
+          "ativo": {
+            "type": "boolean"
+          },
+          "criadoPor": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "criadoEm": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "alteradoPor": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "alteradoEm": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "MovimentacaoEstoqueResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "idObra": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "nomeObra": {
+            "type": "string"
+          },
+          "idMaterial": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "nomeMaterial": {
+            "type": "string"
+          },
+          "idFornecedor": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "nomeFornecedor": {
+            "type": "string",
+            "nullable": true
+          },
+          "tipo": {
+            "type": "string",
+            "enum": [
+              "ENTRADA",
+              "SAIDA",
+              "AJUSTE"
+            ]
+          },
+          "quantidade": {
+            "type": "number"
+          },
+          "dataMovimentacao": {
+            "type": "string",
+            "format": "date"
+          },
+          "observacao": {
+            "type": "string"
+          },
+          "ativo": {
+            "type": "boolean"
+          },
+          "criadoPor": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "criadoEm": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "alteradoPor": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "alteradoEm": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "StatusServicoRequest": {
+        "type": "object",
+        "required": [
+          "codigo",
+          "nome"
+        ],
+        "properties": {
+          "codigo": {
+            "type": "string"
+          },
+          "nome": {
+            "type": "string"
+          },
+          "descricao": {
+            "type": "string"
+          }
+        }
+      },
+      "StatusServicoResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "codigo": {
+            "type": "string"
+          },
+          "nome": {
+            "type": "string"
+          },
+          "descricao": {
+            "type": "string"
+          },
+          "ativo": {
+            "type": "boolean"
+          },
+          "criadoPor": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "criadoEm": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "alteradoPor": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "alteradoEm": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ServicoRequest": {
+        "type": "object",
+        "required": [
+          "idObra",
+          "idStatusServico",
+          "nome"
+        ],
+        "properties": {
+          "idObra": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "idStatusServico": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "nome": {
+            "type": "string"
+          },
+          "descricao": {
+            "type": "string"
+          },
+          "observacao": {
+            "type": "string"
+          }
+        }
+      },
+      "ServicoResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "idObra": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "nomeObra": {
+            "type": "string"
+          },
+          "idStatusServico": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "nomeStatusServico": {
+            "type": "string"
+          },
+          "nome": {
+            "type": "string"
+          },
+          "descricao": {
+            "type": "string"
+          },
+          "observacao": {
+            "type": "string"
+          },
+          "ativo": {
+            "type": "boolean"
+          },
+          "criadoPor": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "criadoEm": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "alteradoPor": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "alteradoEm": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ServicoMaterialRequest": {
+        "type": "object",
+        "required": [
+          "idServico",
+          "idObra",
+          "idMaterial",
+          "quantidade"
+        ],
+        "properties": {
+          "idServico": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "idObra": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "idMaterial": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "quantidade": {
+            "type": "number"
+          },
+          "observacao": {
+            "type": "string"
+          }
+        }
+      },
+      "ServicoMaterialResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "idServico": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "nomeServico": {
+            "type": "string"
+          },
+          "idObra": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "nomeObra": {
+            "type": "string"
+          },
+          "idMaterial": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "nomeMaterial": {
+            "type": "string"
+          },
+          "quantidade": {
+            "type": "number"
+          },
+          "observacao": {
+            "type": "string"
+          }
         }
       }
     }

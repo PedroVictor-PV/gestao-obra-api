@@ -1,0 +1,87 @@
+package com.example.gestaoobraapi.service;
+
+import com.example.gestaoobraapi.dto.MaterialRequest;
+import com.example.gestaoobraapi.exception.CodigoAlreadyExistsException;
+import com.example.gestaoobraapi.exception.ResourceNotFoundException;
+import com.example.gestaoobraapi.mapper.MaterialMapper;
+import com.example.gestaoobraapi.model.CategoriaMaterial;
+import com.example.gestaoobraapi.model.Fornecedor;
+import com.example.gestaoobraapi.model.Material;
+import com.example.gestaoobraapi.repository.CategoriaMaterialRepository;
+import com.example.gestaoobraapi.repository.FornecedorRepository;
+import com.example.gestaoobraapi.repository.MaterialRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+@Service
+public class MaterialService {
+
+    private final MaterialRepository materialRepository;
+    private final CategoriaMaterialRepository categoriaMaterialRepository;
+    private final FornecedorRepository fornecedorRepository;
+    private final MaterialMapper materialMapper;
+
+    public MaterialService(
+            MaterialRepository materialRepository,
+            CategoriaMaterialRepository categoriaMaterialRepository,
+            FornecedorRepository fornecedorRepository,
+            MaterialMapper materialMapper) {
+        this.materialRepository = materialRepository;
+        this.categoriaMaterialRepository = categoriaMaterialRepository;
+        this.fornecedorRepository = fornecedorRepository;
+        this.materialMapper = materialMapper;
+    }
+
+    @Transactional
+    public Material criar(Material material) {
+        if (materialRepository.findByCodigo(material.getCodigo()).isPresent()) {
+            throw new CodigoAlreadyExistsException("O código '" + material.getCodigo() + "' já está em uso.");
+        }
+        material.setCategoria(buscarCategoria(material.getCategoria().getId()));
+        material.setFornecedor(buscarFornecedor(material.getFornecedor().getId()));
+        Material materialSalvo = materialRepository.save(material);
+        return materialRepository.findByIdWithCategoriaAndFornecedor(materialSalvo.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Material não encontrado com id: " + materialSalvo.getId()));
+    }
+
+    @Transactional(readOnly = true)
+    public List<Material> listarTodos() {
+        return materialRepository.findAllWithCategoriaAndFornecedor();
+    }
+
+    @Transactional(readOnly = true)
+    public Material buscarPorId(Long id) {
+        return materialRepository.findByIdWithCategoriaAndFornecedor(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Material não encontrado com id: " + id));
+    }
+
+    @Transactional
+    public Material atualizar(Long id, MaterialRequest request) {
+        Material material = buscarPorId(id);
+        if (materialRepository.existsByCodigoAndIdNot(request.getCodigo(), id)) {
+            throw new CodigoAlreadyExistsException("O código '" + request.getCodigo() + "' já está em uso.");
+        }
+        materialMapper.updateFromRequest(request, material);
+        material.setCategoria(buscarCategoria(request.getIdCategoria()));
+        material.setFornecedor(buscarFornecedor(request.getIdFornecedor()));
+        return materialRepository.save(material);
+    }
+
+    @Transactional
+    public void excluir(Long id) {
+        Material material = buscarPorId(id);
+        materialRepository.delete(material);
+    }
+
+    private CategoriaMaterial buscarCategoria(Long id) {
+        return categoriaMaterialRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Categoria de material não encontrada com id: " + id));
+    }
+
+    private Fornecedor buscarFornecedor(Long id) {
+        return fornecedorRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Fornecedor não encontrado com id: " + id));
+    }
+}

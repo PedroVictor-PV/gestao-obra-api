@@ -139,9 +139,9 @@ CREATE TABLE public.categoria_material (
 CREATE TABLE public.material (
     id              BIGSERIAL     PRIMARY KEY,
     id_categoria    BIGINT        NOT NULL REFERENCES public.categoria_material(id),
+    id_fornecedor   BIGINT        NOT NULL REFERENCES public.fornecedor(id),
     codigo          VARCHAR(50)   NOT NULL UNIQUE,
     nome            VARCHAR(150)  NOT NULL,
-    estoque_minimo  NUMERIC(12,3) NOT NULL DEFAULT 0,
     ativo           BOOLEAN       NOT NULL DEFAULT TRUE,
     criado_por      BIGINT        REFERENCES seguranca.usuario(id),
     criado_em       TIMESTAMP     NOT NULL DEFAULT NOW(),
@@ -153,10 +153,15 @@ CREATE TABLE public.estoque_obra (
     id                BIGSERIAL     PRIMARY KEY,
     id_obra           BIGINT        NOT NULL REFERENCES public.obra(id),
     id_material       BIGINT        NOT NULL REFERENCES public.material(id),
+    id_fornecedor     BIGINT        NOT NULL REFERENCES public.fornecedor(id),
     quantidade_atual  NUMERIC(12,3) NOT NULL DEFAULT 0,
     quantidade_minima NUMERIC(12,3) NOT NULL DEFAULT 0,
-    atualizado_em     TIMESTAMP     NOT NULL DEFAULT NOW(),
-    UNIQUE (id_obra, id_material)
+    ativo             BOOLEAN       NOT NULL DEFAULT TRUE,
+    criado_por        BIGINT        REFERENCES seguranca.usuario(id),
+    criado_em         TIMESTAMP     NOT NULL DEFAULT NOW(),
+    alterado_por      BIGINT        REFERENCES seguranca.usuario(id),
+    alterado_em       TIMESTAMP     NOT NULL DEFAULT NOW(),
+    UNIQUE (id_obra, id_material, id_fornecedor)
 );
 
 CREATE TABLE public.movimentacao_estoque (
@@ -166,12 +171,13 @@ CREATE TABLE public.movimentacao_estoque (
     id_fornecedor     BIGINT        REFERENCES public.fornecedor(id),
     tipo              VARCHAR(20)   NOT NULL CHECK (tipo IN ('ENTRADA', 'SAIDA', 'AJUSTE')),
     quantidade        NUMERIC(12,3) NOT NULL,
-    preco_unitario    NUMERIC(12,2),
     data_movimentacao DATE          NOT NULL DEFAULT CURRENT_DATE,
-    nota_fiscal       VARCHAR(50),
     observacao        TEXT,
+    ativo             BOOLEAN       NOT NULL DEFAULT TRUE,
     criado_por        BIGINT        REFERENCES seguranca.usuario(id),
-    criado_em         TIMESTAMP     NOT NULL DEFAULT NOW()
+    criado_em         TIMESTAMP     NOT NULL DEFAULT NOW(),
+    alterado_por      BIGINT        REFERENCES seguranca.usuario(id),
+    alterado_em       TIMESTAMP     NOT NULL DEFAULT NOW()
 );
 
 -- ------------------------------------------------------------
@@ -211,6 +217,7 @@ CREATE TABLE public.servico_material (
     id_servico   BIGINT    NOT NULL REFERENCES public.servico(id),
     id_obra      BIGINT    NOT NULL REFERENCES public.obra(id),
     id_material  BIGINT    NOT NULL REFERENCES public.material(id),
+    
     observacao   TEXT,
     UNIQUE (id_servico, id_obra, id_material)
 );
