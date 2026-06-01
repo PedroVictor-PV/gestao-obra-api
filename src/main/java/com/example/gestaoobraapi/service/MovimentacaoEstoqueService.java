@@ -1,5 +1,6 @@
 package com.example.gestaoobraapi.service;
 
+import com.example.gestaoobraapi.exception.BusinessException;
 import com.example.gestaoobraapi.exception.ResourceNotFoundException;
 import com.example.gestaoobraapi.model.*;
 import com.example.gestaoobraapi.repository.MovimentacaoEstoqueRepository;
@@ -95,5 +96,16 @@ public class MovimentacaoEstoqueService {
             throw new ResourceNotFoundException("Obra não encontrada com id: " + obraId);
         }
         return movimentacaoEstoqueRepository.findAllByObraIdWithRelations(obraId);
+    }
+
+    @Transactional(readOnly = true)
+    public List<MovimentacaoEstoque> listarComFiltros(Long obraId, LocalDate dataInicio, LocalDate dataFim) {
+        if (obraId != null && !obraRepository.existsById(obraId)) {
+            throw new ResourceNotFoundException("Obra não encontrada com id: " + obraId);
+        }
+        if (dataInicio != null && dataFim != null && dataInicio.isAfter(dataFim)) {
+            throw new BusinessException("dataInicio não pode ser posterior a dataFim.");
+        }
+        return movimentacaoEstoqueRepository.findAllWithFilters(obraId, dataInicio, dataFim);
     }
 }

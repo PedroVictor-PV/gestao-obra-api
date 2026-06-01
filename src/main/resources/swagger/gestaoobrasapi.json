@@ -11,6 +11,11 @@
       "description": "Desenvolvimento"
     }
   ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
   "tags": [
     {
       "name": "Auth",
@@ -60,6 +65,10 @@
     },
     {
       "name": "ServicoMaterial"
+    },
+    {
+      "name": "Relatorios",
+      "description": "Exporta\u00e7\u00e3o de planilhas e consultas anal\u00edticas"
     }
   ],
   "paths": {
@@ -70,6 +79,7 @@
         ],
         "summary": "Registrar um novo usu\u00e1rio",
         "operationId": "register",
+        "security": [],
         "requestBody": {
           "required": true,
           "content": {
@@ -111,6 +121,7 @@
         ],
         "summary": "Realizar login do usu\u00e1rio",
         "operationId": "login",
+        "security": [],
         "requestBody": {
           "required": true,
           "content": {
@@ -2257,6 +2268,224 @@
           }
         }
       }
+    },
+    "/relatorios/obra/{idObra}": {
+      "get": {
+        "tags": [
+          "Relatorios"
+        ],
+        "summary": "Exportar planilha consolidada da obra",
+        "description": "Exemplo: GET /relatorios/obra/1?formato=xlsx — obra seed OBR-001 (Residencial Jardim das Palmeiras). Abas: Resumo, Estoque, Movimenta\u00e7\u00f5es, Servi\u00e7os, Materiais nos servi\u00e7os.",
+        "operationId": "exportarPlanilhaObra",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "idObra",
+            "in": "path",
+            "required": true,
+            "description": "ID da obra (seed OBR-001 = 1)",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "example": 1
+          },
+          {
+            "name": "formato",
+            "in": "query",
+            "required": false,
+            "description": "Formato do arquivo (apenas xlsx)",
+            "schema": {
+              "type": "string",
+              "default": "xlsx",
+              "enum": [
+                "xlsx"
+              ]
+            },
+            "example": "xlsx"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Arquivo Excel (.xlsx) para download",
+            "content": {
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                },
+                "example": "Arquivo bin\u00e1rio .xlsx — 5 abas: Resumo, Estoque, Movimenta\u00e7\u00f5es, Servi\u00e7os, Materiais nos servi\u00e7os"
+              }
+            },
+            "headers": {
+              "Content-Disposition": {
+                "description": "Nome do arquivo para download",
+                "schema": {
+                  "type": "string"
+                },
+                "example": "attachment; filename=\"relatorio-obra-OBR-001.xlsx\""
+              }
+            }
+          },
+          "400": {
+            "description": "Formato inv\u00e1lido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Sem permiss\u00e3o RELATORIO_OBRA_EXPORTAR",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Obra n\u00e3o encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/relatorios/movimentacao/estoque": {
+      "get": {
+        "tags": [
+          "Relatorios"
+        ],
+        "summary": "Listar ou exportar movimenta\u00e7\u00f5es de estoque",
+        "description": "Exemplo CSV: GET /relatorios/movimentacao/estoque?formato=csv&idObra=1&dataInicio=2026-01-01&dataFim=2026-06-30",
+        "operationId": "listarMovimentacoesEstoqueRelatorio",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "formato",
+            "in": "query",
+            "required": false,
+            "description": "json (padr\u00e3o) ou csv para download do arquivo",
+            "schema": {
+              "type": "string",
+              "default": "json",
+              "enum": [
+                "json",
+                "csv"
+              ]
+            },
+            "example": "csv"
+          },
+          {
+            "name": "idObra",
+            "in": "query",
+            "required": false,
+            "description": "Filtrar por obra (seed OBR-001 = 1)",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "example": 1
+          },
+          {
+            "name": "dataInicio",
+            "in": "query",
+            "required": false,
+            "description": "Data inicial inclusive (yyyy-MM-dd)",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "example": "2026-01-01"
+          },
+          {
+            "name": "dataFim",
+            "in": "query",
+            "required": false,
+            "description": "Data final inclusive (yyyy-MM-dd)",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "example": "2026-06-30"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista JSON ou arquivo CSV",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MovimentacaoEstoqueResponse"
+                  }
+                },
+                "example": [
+                  {
+                    "id": 1,
+                    "idObra": 1,
+                    "nomeObra": "Residencial Jardim das Palmeiras",
+                    "idMaterial": 1,
+                    "nomeMaterial": "Tubo PVC 50mm",
+                    "idFornecedor": 1,
+                    "nomeFornecedor": "Construmax Materiais",
+                    "tipo": "ENTRADA",
+                    "quantidade": 100,
+                    "dataMovimentacao": "2026-03-15",
+                    "observacao": "Entrada inicial",
+                    "ativo": true
+                  }
+                ]
+              },
+              "text/csv": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                },
+                "example": "nomeObra;nomeMaterial;nomeFornecedor;tipo;quantidade;dataMovimentacao;observacao"
+              }
+            }
+          },
+          "400": {
+            "description": "Formato inv\u00e1lido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Sem permiss\u00e3o RELATORIO_MOVIMENTACAO_LISTAR",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -2264,7 +2493,8 @@
       "bearerAuth": {
         "type": "http",
         "scheme": "bearer",
-        "bearerFormat": "JWT"
+        "bearerFormat": "JWT",
+        "description": "Autentica\u00e7\u00e3o JWT. Obtenha o token em POST /auth/login e informe no header Authorization como: Bearer {token}. No Swagger UI, cole apenas o valor do token."
       }
     },
     "schemas": {

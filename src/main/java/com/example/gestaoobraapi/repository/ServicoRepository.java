@@ -23,4 +23,13 @@ public interface ServicoRepository extends JpaRepository<Servico, Long> {
             WHERE s.id = :id
             """)
     Optional<Servico> findByIdWithRelations(Long id);
+
+    @Query("""
+            SELECT s FROM Servico s
+            JOIN FETCH s.obra
+            JOIN FETCH s.statusServico
+            WHERE s.obra.id = :obraId
+            ORDER BY s.nome
+            """)
+    List<Servico> findAllByObraIdWithRelations(Long obraId);
 }
