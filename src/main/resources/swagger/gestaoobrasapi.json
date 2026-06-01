@@ -11,6 +11,11 @@
       "description": "Desenvolvimento"
     }
   ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
   "tags": [
     {
       "name": "Auth",
@@ -70,6 +75,7 @@
         ],
         "summary": "Registrar um novo usu\u00e1rio",
         "operationId": "register",
+        "security": [],
         "requestBody": {
           "required": true,
           "content": {
@@ -111,6 +117,7 @@
         ],
         "summary": "Realizar login do usu\u00e1rio",
         "operationId": "login",
+        "security": [],
         "requestBody": {
           "required": true,
           "content": {
@@ -2264,7 +2271,8 @@
       "bearerAuth": {
         "type": "http",
         "scheme": "bearer",
-        "bearerFormat": "JWT"
+        "bearerFormat": "JWT",
+        "description": "Autentica\u00e7\u00e3o JWT. Obtenha o token em POST /auth/login e informe no header Authorization como: Bearer {token}. No Swagger UI, cole apenas o valor do token."
       }
     },
     "schemas": {
