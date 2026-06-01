@@ -9,6 +9,11 @@ target/
 *.nar
 
 # ========================
+# Scripts locais (utilitários de dev, não usados no build)
+# ========================
+scripts/
+
+# ========================
 # Maven
 # ========================
 .mvn/wrapper/maven-wrapper.jar
