@@ -1482,6 +1482,52 @@
         }
       }
     },
+    "/obra/estoque/voz": {
+      "post": {
+        "tags": [
+          "EstoqueObra"
+        ],
+        "summary": "Entrada de estoque por comando de voz",
+        "operationId": "processarComandoVoz",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VozEstoqueRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Estoque atualizado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EstoqueObraResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Material não identificado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/obra/estoque": {
       "post": {
         "tags": [
@@ -2762,6 +2808,13 @@
           "telefone": {
             "type": "string",
             "maxLength": 20
+          },
+          "idsObras": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            }
           }
         }
       },
@@ -2780,6 +2833,13 @@
           },
           "telefone": {
             "type": "string"
+          },
+          "idsObras": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            }
           },
           "ativo": {
             "type": "boolean"
@@ -2801,6 +2861,36 @@
           "alteradoEm": {
             "type": "string",
             "format": "date-time"
+          }
+        }
+      },
+      "VozEstoqueRequest": {
+        "type": "object",
+        "required": [
+          "material",
+          "idObra"
+        ],
+        "properties": {
+          "material": {
+            "type": "string",
+            "description": "Nome do material transcrito pelo microsserviço"
+          },
+          "quantidade": {
+            "type": "number",
+            "description": "Quantidade extraída da transcrição"
+          },
+          "fornecedor": {
+            "type": "string",
+            "description": "Nome do fornecedor extraído da transcrição"
+          },
+          "acao": {
+            "type": "string",
+            "description": "Ação detectada: 'adicionar', 'subtrair' ou texto livre da transcrição"
+          },
+          "idObra": {
+            "type": "integer",
+            "format": "int64",
+            "description": "ID da obra extraído do JWT"
           }
         }
       },
@@ -2839,6 +2929,34 @@
           "dataFim": {
             "type": "string",
             "format": "date"
+          },
+          "cep": {
+            "type": "string",
+            "maxLength": 9
+          },
+          "logradouro": {
+            "type": "string",
+            "maxLength": 255
+          },
+          "numero": {
+            "type": "string",
+            "maxLength": 20
+          },
+          "complemento": {
+            "type": "string",
+            "maxLength": 255
+          },
+          "bairro": {
+            "type": "string",
+            "maxLength": 150
+          },
+          "localidade": {
+            "type": "string",
+            "maxLength": 150
+          },
+          "uf": {
+            "type": "string",
+            "maxLength": 2
           }
         }
       },
@@ -2865,6 +2983,10 @@
             "type": "string",
             "nullable": true
           },
+          "nomeResponsavel": {
+            "type": "string",
+            "nullable": true
+          },
           "codigo": {
             "type": "string"
           },
@@ -2881,6 +3003,27 @@
           "dataFim": {
             "type": "string",
             "format": "date"
+          },
+          "cep": {
+            "type": "string"
+          },
+          "logradouro": {
+            "type": "string"
+          },
+          "numero": {
+            "type": "string"
+          },
+          "complemento": {
+            "type": "string"
+          },
+          "bairro": {
+            "type": "string"
+          },
+          "localidade": {
+            "type": "string"
+          },
+          "uf": {
+            "type": "string"
           },
           "ativo": {
             "type": "boolean"
@@ -3055,6 +3198,13 @@
             "type": "integer",
             "format": "int64"
           },
+          "idsObras": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
           "codigo": {
             "type": "string",
             "maxLength": 50
@@ -3085,6 +3235,13 @@
           },
           "nomeFornecedor": {
             "type": "string"
+          },
+          "idsObras": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            }
           },
           "codigo": {
             "type": "string"

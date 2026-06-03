@@ -3,6 +3,9 @@ package com.example.gestaoobraapi.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "fornecedor")
 @Getter
@@ -24,4 +27,12 @@ public class Fornecedor extends BaseEntity {
 
     @Column(name = "telefone", length = 20)
     private String telefone;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "fornecedor_obra",
+        joinColumns = @JoinColumn(name = "id_fornecedor"),
+        inverseJoinColumns = @JoinColumn(name = "id_obra")
+    )
+    private List<Obra> obras = new ArrayList<>();
 }

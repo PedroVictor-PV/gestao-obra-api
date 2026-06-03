@@ -20,4 +20,13 @@ public interface MaterialRepository extends JpaRepository<Material, Long> {
 
     @Query("SELECT m FROM Material m JOIN FETCH m.categoria JOIN FETCH m.fornecedor WHERE m.id = :id")
     Optional<Material> findByIdWithCategoriaAndFornecedor(Long id);
+
+    @Query("SELECT m FROM Material m JOIN FETCH m.categoria JOIN FETCH m.fornecedor WHERE LOWER(m.nome) LIKE LOWER(CONCAT('%', :nome, '%'))")
+    List<Material> findByNomeContainingIgnoreCase(String nome);
+
+    @Query("SELECT m FROM Material m JOIN FETCH m.categoria JOIN FETCH m.fornecedor JOIN m.obras o WHERE LOWER(m.nome) LIKE LOWER(CONCAT('%', :nome, '%')) AND o.id = :obraId")
+    List<Material> findByNomeContainingIgnoreCaseAndObraId(String nome, Long obraId);
+
+    @Query("SELECT m FROM Material m JOIN FETCH m.categoria JOIN FETCH m.fornecedor JOIN m.obras o WHERE o.id = :obraId")
+    List<Material> findByObraIdWithRelations(Long obraId);
 }

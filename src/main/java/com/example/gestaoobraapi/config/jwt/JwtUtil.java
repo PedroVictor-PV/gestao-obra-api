@@ -52,8 +52,17 @@ public class JwtUtil {
         return extractExpiration(token).before(new Date());
     }
 
-    public String generateToken(String username) {
+    public String generateToken(String username, java.util.List<Long> idsObra) {
         Map<String, Object> claims = new HashMap<>();
+        claims.put("obras", idsObra);
+        return createToken(claims, username);
+    }
+
+    public String generateToken(String username, java.util.List<Long> idsObra, String nome, String cargo) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("obras", idsObra);
+        claims.put("nome", nome);
+        claims.put("cargo", cargo);
         return createToken(claims, username);
     }
 

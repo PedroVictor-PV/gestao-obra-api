@@ -13,7 +13,7 @@ public class MovimentacaoEstoqueCsvService {
     private static final DateTimeFormatter DATA = DateTimeFormatter.ISO_LOCAL_DATE;
 
     private static final String CABECALHO =
-            "nomeObra;nomeMaterial;nomeFornecedor;tipo;quantidade;dataMovimentacao;observacao";
+            "Obra;Produto / Material;Fornecedor;Tipo de Movimentação;Quantidade;Data da Movimentação;Observação";
 
     public byte[] gerar(List<MovimentacaoEstoqueResponse> movimentacoes) {
         StringBuilder csv = new StringBuilder();

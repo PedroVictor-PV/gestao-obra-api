@@ -40,4 +40,26 @@ public class Obra extends BaseEntity {
 
     @Column(name = "data_fim")
     private LocalDate dataFim;
+
+    // --- Endereço (padrão ViaCEP) ---
+    @Column(name = "cep", length = 9)
+    private String cep;
+
+    @Column(name = "logradouro", length = 255)
+    private String logradouro;
+
+    @Column(name = "numero", length = 20)
+    private String numero;
+
+    @Column(name = "complemento", length = 255)
+    private String complemento;
+
+    @Column(name = "bairro", length = 150)
+    private String bairro;
+
+    @Column(name = "localidade", length = 150)
+    private String localidade;
+
+    @Column(name = "uf", length = 2)
+    private String uf;
 }

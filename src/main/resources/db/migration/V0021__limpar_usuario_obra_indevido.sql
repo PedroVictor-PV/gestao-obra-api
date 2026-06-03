@@ -1,0 +1,1 @@
+DELETE FROM seguranca.usuario_obra WHERE id_usuario = (SELECT id FROM seguranca.usuario WHERE chave = '22222222222') AND id_obra = (SELECT id FROM public.obra WHERE codigo = 'OBR-003');

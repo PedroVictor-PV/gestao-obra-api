@@ -19,6 +19,9 @@ public class Usuario extends BaseEntity {
     @Column(name = "chave", nullable = false, unique = true, length = 100)
     private String chave;
 
+    @Column(name = "nome", length = 150)
+    private String nome;
+
     @Column(name = "senha", nullable = false, length = 255)
     private String senha;
 }

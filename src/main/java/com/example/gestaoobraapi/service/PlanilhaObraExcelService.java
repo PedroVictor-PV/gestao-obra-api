@@ -44,7 +44,8 @@ public class PlanilhaObraExcelService {
     private void criarAbaResumo(Workbook workbook, CellStyle headerStyle, Obra obra) {
         Sheet sheet = workbook.createSheet("Resumo");
         String[] headers = {
-                "Código", "Nome", "Status", "Responsável", "Data início", "Data fim", "Descrição", "Ativo"
+                "Código", "Nome", "Status", "Responsável", "Data início", "Data fim", "Descrição",
+                "CEP", "Logradouro", "Número", "Complemento", "Bairro", "Cidade", "UF", "Ativo"
         };
         criarCabecalho(sheet, headerStyle, headers);
 
@@ -53,10 +54,25 @@ public class PlanilhaObraExcelService {
         row.createCell(col++).setCellValue(obra.getCodigo());
         row.createCell(col++).setCellValue(obra.getNome());
         row.createCell(col++).setCellValue(obra.getStatusObra() != null ? obra.getStatusObra().getNome() : "");
-        row.createCell(col++).setCellValue(obra.getResponsavel() != null ? obra.getResponsavel().getChave() : "");
+        // Mostrar nome do responsável em vez da chave
+        String nomeResponsavel = "";
+        if (obra.getResponsavel() != null) {
+            nomeResponsavel = obra.getResponsavel().getNome() != null
+                    ? obra.getResponsavel().getNome()
+                    : obra.getResponsavel().getChave();
+        }
+        row.createCell(col++).setCellValue(nomeResponsavel);
         row.createCell(col++).setCellValue(formatarData(obra.getDataInicio()));
         row.createCell(col++).setCellValue(formatarData(obra.getDataFim()));
         row.createCell(col++).setCellValue(obra.getDescricao() != null ? obra.getDescricao() : "");
+        // Campos de endereço
+        row.createCell(col++).setCellValue(obra.getCep() != null ? obra.getCep() : "");
+        row.createCell(col++).setCellValue(obra.getLogradouro() != null ? obra.getLogradouro() : "");
+        row.createCell(col++).setCellValue(obra.getNumero() != null ? obra.getNumero() : "");
+        row.createCell(col++).setCellValue(obra.getComplemento() != null ? obra.getComplemento() : "");
+        row.createCell(col++).setCellValue(obra.getBairro() != null ? obra.getBairro() : "");
+        row.createCell(col++).setCellValue(obra.getLocalidade() != null ? obra.getLocalidade() : "");
+        row.createCell(col++).setCellValue(obra.getUf() != null ? obra.getUf() : "");
         row.createCell(col).setCellValue(Boolean.TRUE.equals(obra.getAtivo()) ? "Sim" : "Não");
 
         autoSize(sheet, headers.length);

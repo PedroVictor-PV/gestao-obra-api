@@ -19,6 +19,7 @@ public interface ObraMapper {
     @Mapping(target = "nomeStatusObra", source = "statusObra.nome")
     @Mapping(target = "idResponsavel", source = "responsavel.id")
     @Mapping(target = "chaveResponsavel", source = "responsavel.chave")
+    @Mapping(target = "nomeResponsavel", source = "responsavel.nome")
     ObraResponse toResponse(Obra obra);
 
     @Mapping(target = "id", ignore = true)

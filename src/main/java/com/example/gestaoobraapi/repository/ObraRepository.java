@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import org.springframework.data.repository.query.Param;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -19,5 +21,11 @@ public interface ObraRepository extends JpaRepository<Obra, Long> {
     List<Obra> findAllWithStatusAndResponsavel();
 
     @Query("SELECT o FROM Obra o JOIN FETCH o.statusObra LEFT JOIN FETCH o.responsavel WHERE o.id = :id")
-    Optional<Obra> findByIdWithStatusAndResponsavel(Long id);
+    Optional<Obra> findByIdWithStatusAndResponsavel(@Param("id") Long id);
+
+    @Query("SELECT o.id FROM Obra o WHERE o.responsavel.id = :responsavelId")
+    List<Long> findObraIdsByResponsavelId(@Param("responsavelId") Long responsavelId);
+
+    @Query("SELECT o FROM Obra o JOIN FETCH o.statusObra LEFT JOIN FETCH o.responsavel WHERE o.id IN :ids")
+    List<Obra> findAllWithStatusAndResponsavelByIds(@Param("ids") List<Long> ids);
 }

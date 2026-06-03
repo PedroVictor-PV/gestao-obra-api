@@ -41,4 +41,23 @@ public class UsuarioService {
 
         return usuarioEncontrado;
     }
+
+    @Transactional(readOnly = true)
+    public java.util.List<Usuario> listarOperarios() {
+        return usuarioRepository.findOperarios();
+    }
+
+    @Transactional
+    public Usuario criarOperario(Usuario usuario) {
+        if (usuarioRepository.findByChave(usuario.getChave()).isPresent()) {
+            throw new ChaveAlreadyExistsException("A chave '" + usuario.getChave() + "' já está em uso.");
+        }
+
+        usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
+        Usuario usuarioSalvo = usuarioRepository.save(usuario);
+
+        usuarioRepository.adicionarPerfil(usuarioSalvo.getId(), "OPERARIO");
+
+        return usuarioSalvo;
+    }
 }

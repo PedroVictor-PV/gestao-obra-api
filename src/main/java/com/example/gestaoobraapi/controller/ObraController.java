@@ -8,6 +8,7 @@ import com.example.gestaoobraapi.dto.ObraRequest;
 import com.example.gestaoobraapi.dto.ObraResponse;
 import com.example.gestaoobraapi.dto.StatusObraRequest;
 import com.example.gestaoobraapi.dto.StatusObraResponse;
+import com.example.gestaoobraapi.dto.VozEstoqueRequest;
 import com.example.gestaoobraapi.mapper.EstoqueObraMapper;
 import com.example.gestaoobraapi.mapper.MovimentacaoEstoqueMapper;
 import com.example.gestaoobraapi.mapper.ObraMapper;
@@ -19,9 +20,15 @@ import com.example.gestaoobraapi.service.EstoqueObraService;
 import com.example.gestaoobraapi.service.MovimentacaoEstoqueService;
 import com.example.gestaoobraapi.service.ObraService;
 import com.example.gestaoobraapi.service.StatusObraService;
+import com.example.gestaoobraapi.model.Usuario;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -161,5 +168,60 @@ public class ObraController implements ObraApi {
                 .map(movimentacaoEstoqueMapper::toResponse)
                 .toList();
         return ResponseEntity.ok(response);
+    }
+
+    /**
+     * Endpoint de voz: recebe material, quantidade, fornecedor, acao e idObra
+     * já extraídos pelo microsserviço Python no frontend.
+     * Não faz parte da interface ObraApi gerada (será sincronizado após próximo compile).
+     */
+    @PostMapping("/obra/estoque/voz")
+    public ResponseEntity<EstoqueObraResponse> processarComandoVoz(
+            @Valid @RequestBody VozEstoqueRequest request) {
+        EstoqueObra estoque = estoqueObraService.processarComandoVoz(request);
+        return ResponseEntity.ok(estoqueObraMapper.toResponse(estoque));
+    }
+
+    @GetMapping("/obras/{idObra}/operadores")
+    public ResponseEntity<List<UsuarioController.UsuarioDto>> listarOperadoresVinculados(@PathVariable("idObra") Long idObra) {
+        List<UsuarioController.UsuarioDto> operadores = obraService.listarOperadoresVinculados(idObra).stream()
+                .map(u -> new UsuarioController.UsuarioDto(u.getId(), u.getNome(), u.getChave()))
+                .toList();
+        return ResponseEntity.ok(operadores);
+    }
+
+    @PostMapping("/obras/{idObra}/operadores/{idOperador}")
+    public ResponseEntity<Void> vincularOperador(@PathVariable("idObra") Long idObra, @PathVariable("idOperador") Long idOperador) {
+        obraService.vincularOperador(idObra, idOperador);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @org.springframework.web.bind.annotation.DeleteMapping("/obras/{idObra}/operadores/{idOperador}")
+    public ResponseEntity<Void> desvincularOperador(@PathVariable("idObra") Long idObra, @PathVariable("idOperador") Long idOperador) {
+        obraService.desvincularOperador(idObra, idOperador);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/obra/mestres")
+    public ResponseEntity<List<MestreDto>> listarMestres() {
+        List<MestreDto> response = obraService.listarMestres().stream()
+                .map(u -> new MestreDto(u.getId(), u.getNome() != null ? u.getNome() : u.getChave()))
+                .toList();
+        return ResponseEntity.ok(response);
+    }
+
+    public static class MestreDto {
+        private Long id;
+        private String nome;
+
+        public MestreDto(Long id, String nome) {
+            this.id = id;
+            this.nome = nome;
+        }
+
+        public Long getId() { return id; }
+        public void setId(Long id) { this.id = id; }
+        public String getNome() { return nome; }
+        public void setNome(String nome) { this.nome = nome; }
     }
 }

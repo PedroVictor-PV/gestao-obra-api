@@ -71,8 +71,7 @@ public class MateriaisController implements MateriaisApi {
 
     @Override
     public ResponseEntity<MaterialResponse> criarMaterial(MaterialRequest request) {
-        Material material = materialMapper.toModel(request);
-        Material salvo = materialService.criar(material);
+        Material salvo = materialService.criar(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(materialMapper.toResponse(salvo));
     }
 

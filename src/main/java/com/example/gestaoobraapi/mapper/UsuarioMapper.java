@@ -12,6 +12,7 @@ public interface UsuarioMapper {
     UsuarioResponse toResponse(Usuario usuario);
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "nome", ignore = true)
     @Mapping(target = "ativo", ignore = true)
     @Mapping(target = "criadoPor", ignore = true)
     @Mapping(target = "criadoEm", ignore = true)
